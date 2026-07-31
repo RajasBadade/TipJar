@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+.env
+.env.local
+cache
+artifacts
+coverage
+typechain-types
+*.log
+
+# Stellar CLI local identities (contains secret keys) and vendored binaries
+.stellar
+.tools
+target
