@@ -4,17 +4,24 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import {
   getNetworkDetails,
   isBrowser,
+  isConnected,
   requestAccess,
   signAuthEntry,
   signTransaction,
   WatchWalletChanges,
 } from "@stellar/freighter-api";
 
+/** Freighter ships as a desktop browser extension only, so it is absent on mobile browsers. */
+const NO_EXTENSION_MESSAGE =
+  "Freighter not detected. It is a desktop browser extension, so open this page in Chrome, Brave, Edge or Firefox on a computer to connect.";
+
 export type StellarContextValue = {
   address: string | null;
   network: string | null;
   networkPassphrase: string | null;
   rpcUrl: string | null;
+  /** `null` while detection is in flight, then whether the extension responded. */
+  isFreighterAvailable: boolean | null;
   connect: () => Promise<void>;
   disconnect: () => void;
   signTransactionXdr: (txXdr: string) => Promise<string>;
@@ -28,6 +35,7 @@ export function StellarProvider({ children }: { children: ReactNode }) {
   const [network, setNetwork] = useState<string | null>(null);
   const [networkPassphrase, setNetworkPassphrase] = useState<string | null>(null);
   const [rpcUrl, setRpcUrl] = useState<string | null>(null);
+  const [isFreighterAvailable, setIsFreighterAvailable] = useState<boolean | null>(null);
 
   const refreshNetwork = useCallback(async () => {
     const details = await getNetworkDetails();
@@ -43,6 +51,12 @@ export function StellarProvider({ children }: { children: ReactNode }) {
     if (!isBrowser) {
       throw new Error("Freighter is only available in the browser.");
     }
+    const detected = await isConnected();
+    if (detected.error || !detected.isConnected) {
+      setIsFreighterAvailable(false);
+      throw new Error(NO_EXTENSION_MESSAGE);
+    }
+    setIsFreighterAvailable(true);
     const access = await requestAccess();
     if (access.error) {
       throw new Error(access.error.message);
@@ -89,6 +103,24 @@ export function StellarProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
+    if (!isBrowser) {
+      setIsFreighterAvailable(false);
+      return;
+    }
+    let cancelled = false;
+    isConnected()
+      .then((res) => {
+        if (!cancelled) setIsFreighterAvailable(!res.error && res.isConnected);
+      })
+      .catch(() => {
+        if (!cancelled) setIsFreighterAvailable(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isBrowser) return;
     const watcher = new WatchWalletChanges();
     const started = watcher.watch((params) => {
@@ -109,12 +141,23 @@ export function StellarProvider({ children }: { children: ReactNode }) {
       network,
       networkPassphrase,
       rpcUrl,
+      isFreighterAvailable,
       connect,
       disconnect,
       signTransactionXdr,
       signAuthEntryXdr,
     }),
-    [address, connect, disconnect, network, networkPassphrase, rpcUrl, signAuthEntryXdr, signTransactionXdr]
+    [
+      address,
+      connect,
+      disconnect,
+      isFreighterAvailable,
+      network,
+      networkPassphrase,
+      rpcUrl,
+      signAuthEntryXdr,
+      signTransactionXdr,
+    ]
   );
 
   return <StellarContext.Provider value={value}>{children}</StellarContext.Provider>;

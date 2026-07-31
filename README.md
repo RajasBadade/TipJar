@@ -302,13 +302,17 @@ so CI never needs a funded account.
 
 ## Screenshots
 
-Add images under `docs/screenshots/` and link them here:
+### Mobile responsive UI
 
-| What | File |
-| --- | --- |
-| Mobile responsive UI | `docs/screenshots/mobile.png` |
-| CI/CD pipeline running | `docs/screenshots/ci.png` |
-| Test output (3+ passing) | `docs/screenshots/tests.png` |
+![Creator directory and tipping flow on a mobile viewport](docs/screenshots/mobile.png)
+
+### CI/CD pipeline
+
+![GitHub Actions running contract fmt/clippy/tests and frontend lint/test/build](docs/screenshots/ci.png)
+
+### Test output
+
+![cargo test and vitest runs with all tests passing](docs/screenshots/tests.png)
 
 ---
 
