@@ -32,9 +32,8 @@ Inspect either contract on [Stellar Expert (Testnet)](https://stellar.expert/exp
 https://stellar.expert/explorer/testnet/contract/CBSGQUWTCUIK7WUSHKUWW2PUKPZARXOY22VJLBPITBT7762DJB7AMSKN
 ```
 
-**Live demo:** _add your Vercel/Netlify URL here after deploying the frontend_
+**Live demo:** https://tip-jar-gules.vercel.app/
 
-**Demo video (1–2 min):** _add your video link here_
 
 ---
 
