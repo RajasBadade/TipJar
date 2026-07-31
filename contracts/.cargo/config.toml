@@ -1,0 +1,6 @@
+# Host-only workaround: when `cargo test` builds the contract's `cdylib` target
+# on Windows, the MinGW linker tries to auto-export every symbol and overflows
+# its export ordinal table. Tests link against the `rlib`, so suppressing the
+# auto-export is safe. This does not affect `wasm32v1-none` builds.
+[target.x86_64-pc-windows-gnu]
+rustflags = ["-C", "link-arg=-Wl,--exclude-all-symbols"]
