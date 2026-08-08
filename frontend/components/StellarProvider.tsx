@@ -11,9 +11,13 @@ import {
   WatchWalletChanges,
 } from "@stellar/freighter-api";
 
-/** Freighter ships as a desktop browser extension only, so it is absent on mobile browsers. */
+/**
+ * `freighter-api` talks to the provider injected by the Freighter browser
+ * extension. The Freighter mobile app exists but reaches dapps over
+ * WalletConnect instead, so it cannot satisfy these calls.
+ */
 const NO_EXTENSION_MESSAGE =
-  "Freighter not detected. It is a desktop browser extension, so open this page in Chrome, Brave, Edge or Firefox on a computer to connect.";
+  "Freighter extension not detected. Open this page in a desktop browser with the Freighter extension installed to connect.";
 
 export type StellarContextValue = {
   address: string | null;

@@ -72,17 +72,18 @@ export function Nav() {
 
       {isFreighterAvailable === false && !address ? (
         <p className="border-t border-slate bg-forest/40 px-4 py-3 text-center font-body text-xs text-paper/70 sm:px-6">
-          Freighter is a desktop browser extension and is not available on mobile. Browse creators and
-          the live tip feed here, then open this page on a computer with{" "}
+          Signing here needs the{" "}
           <a
             href="https://www.freighter.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gold underline decoration-dotted underline-offset-2"
           >
-            Freighter installed
-          </a>{" "}
-          to tip or withdraw.
+            Freighter browser extension
+          </a>
+          , which this browser does not have. The Freighter mobile app signs through WalletConnect,
+          which this app does not support yet. Browse creators and the live tip feed here, then open
+          this page in a desktop browser with the extension to tip or withdraw.
         </p>
       ) : null}
 
