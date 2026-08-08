@@ -34,7 +34,7 @@ https://stellar.expert/explorer/testnet/contract/CBSGQUWTCUIK7WUSHKUWW2PUKPZARXO
 
 **Live demo:** https://tip-jar-gules.vercel.app/
 
-**Demo video (1–2 min):** _paste your video link here before submitting_
+**Demo video (1–2 min):** https://youtu.be/kdTJM0ILA8I
 
 
 ---
